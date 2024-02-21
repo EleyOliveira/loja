@@ -1,2 +1,6 @@
 .devcontainer
 .github
+commitlint.config.js
+go.*
+*.json
+.husky
