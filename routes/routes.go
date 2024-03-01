@@ -7,4 +7,6 @@ import (
 
 func CarregarRotas() {
 	http.HandleFunc("/", controllers.Index)
+	http.HandleFunc("/inclusao", controllers.Inclusao)
+	http.HandleFunc("/insert", controllers.Incluir)
 }
