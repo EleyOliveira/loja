@@ -72,3 +72,4 @@ func Deletar(id string) {
 	delecao.Exec(id)
 	defer db.Close()
 }
+

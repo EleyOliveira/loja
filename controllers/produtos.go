@@ -42,3 +42,4 @@ func Deletar(w http.ResponseWriter, r *http.Request) {
 	models.Deletar(r.URL.Query().Get("id"))
 	http.Redirect(w, r, "/", 301)
 }
+
