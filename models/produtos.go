@@ -59,3 +59,17 @@ func Incluir(nome, descricao string, preco float64, quantidade int) {
 	defer db.Close()
 
 }
+
+func Deletar(id string) {
+	db := db.ConectaBancoDados()
+
+	delecao, err := db.Prepare("delete from produtos where id = $1")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	delecao.Exec(id)
+	defer db.Close()
+}
+
