@@ -13,6 +13,39 @@ type Produto struct {
 	Quantidade int
 }
 
+func ConsultaProduto(id string) Produto {
+
+	db := db.ConectaBancoDados()
+	produto, err := db.Query("select * from produtos where id = $1", id)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	produtoRetorno := Produto{}
+
+	for produto.Next() {
+		var id, quantidade int
+		var nome, descricao string
+		var preco float64
+
+		err = produto.Scan(&id, &nome, &descricao, &preco, &quantidade)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		produtoRetorno.Id = id
+		produtoRetorno.Descricao = descricao
+		produtoRetorno.Nome = nome
+		produtoRetorno.Preco = preco
+		produtoRetorno.Quantidade = quantidade
+	}
+
+	defer db.Close()
+
+	return produtoRetorno
+
+}
+
 func ConsultaProdutos() []Produto {
 
 	db := db.ConectaBancoDados()
@@ -73,3 +106,14 @@ func Deletar(id string) {
 	defer db.Close()
 }
 
+func Editar(id, nome, descricao string, preco float64, quantidade int) {
+	db := db.ConectaBancoDados()
+
+	edicao, err := db.Prepare("update produtos set nome = $2, descricao = $3, preco = $4, quantidade = $5 where id = $1")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	edicao.Exec(id, nome, descricao, preco, quantidade)
+	defer db.Close()
+}
